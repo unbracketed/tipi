@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+"""Run a tipi command.
+
+Commands may be any executable in the current path with a `tipi-'
+prefix.  Common commands are: init, extend, clone.
+"""
+
+import os
+import vecmd
+
+
+def main(command, *args):
+    command = 'tipi-%s' % command
+    try:
+        return os.execvp(command, (command, ) + args)
+    except OSError as exc:
+        print exc
+        print 'Is "%s" executable in the current path?' % command
+
+if __name__ == '__main__':
+    vecmd.begin(
+        main,
+        usage="usage: %prog command [options] [arguments]",
+        description=__doc__
+    )
+    

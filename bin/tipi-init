@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+"""Create a new environment by invoking virtualenv."""
+
+import sys
+import vecmd
+
+def main(*args):
+    return vecmd.virtualenv(*args)
+
+if __name__ == '__main__':
+    main(*sys.argv[1:])
+

@@ -1,0 +1,13 @@
+Tipi
+----
+
+Tipi is a tool for deftly managing Python virtualenvs. 
+Drop it in if you're already using virtualenv_wrapper. 
+
+TODO:
+Docs
+Tests
+respect $WORKON_HOME if it exists
+output of virtualenv to stdout -- or some output
+
+
