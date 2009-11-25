@@ -10,4 +10,12 @@ Tests
 respect $WORKON_HOME if it exists
 output of virtualenv to stdout -- or some output
 
+Documentation
+-------------
+
+There is documentation available in the docsource directory containing ReStructured Text
+documents suitable for use with Sphinx (or docutils).
+
+
+
 

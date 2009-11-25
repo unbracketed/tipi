@@ -1,0 +1,19 @@
+export TIPI_PROJECT_HOME=%{project_dir}s
+cd $TIPI_PROJECT_HOME
+
+
+#
+#Django customizations
+#
+alias dj='python manage.py'
+alias djr='dj runserver'
+alias djrp='dj runserver_plus'
+alias djdb='dj dbshell'
+alias djs='dj shell'
+alias djsp='dj shell_plus'
+alias djt='dj test'
+alias djm='dj migrate'
+alias djsm='dj startmigration'
+
+#set server identifier
+SERVER_IDENTIFIER=config.local

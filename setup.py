@@ -18,7 +18,7 @@ setup(
     packages = find_packages('src'),
     package_dir = {'': 'src'},
 
-    install_requires = ['virtualenv','virtualenv-commands'],
+    install_requires = ['virtualenv','virtualenv-commands','CommandLineApp'],
 
     classifiers = [
         'Development Status :: 4 - Beta',
