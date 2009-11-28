@@ -15,10 +15,10 @@ setup(
     author = 'Brian Luft',
     author_email = 'brian@unbracketed.com',
 
-    packages = find_packages('src'),
-    package_dir = {'': 'src'},
+    packages = find_packages('tipi'),
+    package_dir = {'': 'tipi'},
 
-    install_requires = ['virtualenv','virtualenv-commands','CommandLineApp'],
+    install_requires = ['virtualenv','virtualenv-commands'],
 
     classifiers = [
         'Development Status :: 4 - Beta',
