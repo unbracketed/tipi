@@ -28,19 +28,25 @@ class TipiCLITest(TestCase):
     def setUp(TestCase):
         pass
     
-    
+    def runproc(self, *args):
+        print args
+        return Popen(["tipi",] + list(args), stdout=PIPE, stderr=PIPE).communicate()
+        
     def test_no_args(self):
-        output, error = Popen(["tipi",], stdout=PIPE, stderr=PIPE).communicate()
-        #print "OUTPUT IS %s" % output
-        #print "ERROR IS %s" % error
+        output, error = self.runproc()
         self.assertEqual("Type 'tipi help' for usage.", error.rstrip())
     
     def test_display_help(self):
-        #subprocess.call()
-        pass
+        output, error = self.runproc('help')
+        self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create", error.rstrip())
+        output, error = self.runproc('--help')
+        self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create", error.rstrip())
+        
     
     def test_display_version(self):
-        pass
+        output, error = self.runproc('--version')
+        #TODO: placeholder
+        self.assertEqual(str((0,1,0,)),output.rstrip())
 
 
 

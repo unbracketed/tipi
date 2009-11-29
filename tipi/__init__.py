@@ -28,7 +28,8 @@ class CommandDispatch(object):
         """
         usage = ['',"Type %s help <subcommand>' for help on a specific subcommand." % self.prog_name,'']
         usage.append('Available subcommands:')
-        commands = get_commands()
+        #import pdb; pdb.set_trace()
+        commands = get_commands(__path__[0])
         commands.sort()
         for cmd in commands:
             usage.append('  %s' % cmd)
@@ -65,6 +66,7 @@ class CommandDispatch(object):
         try:
             options, args = parser.parse_args(self.argv)
             #handle_default_options(options)
+            print options, args
         except:
             pass # Ignore any option errors at this point.
 
@@ -73,7 +75,7 @@ class CommandDispatch(object):
         except IndexError:
             sys.stderr.write("Type '%s help' for usage.\n" % self.prog_name)
             sys.exit(1)
-
+        #import pdb; pdb.set_trace()
         if subcommand == 'help':
             if len(args) > 2:
                 self.fetch_command(args[2]).print_help(self.prog_name, args[2])
@@ -83,10 +85,9 @@ class CommandDispatch(object):
                 sys.stderr.write(self.main_help_text() + '\n')
                 sys.exit(1)
         elif self.argv[1:] == ['--version']:
-            
-            pass
+            print get_version()
+            sys.exit(0)
         elif self.argv[1:] == ['--help']:
-            #parser.print_lax_help()
             sys.stderr.write(self.main_help_text() + '\n')
         else:
             self.fetch_command(subcommand).run_from_argv(self.argv)
@@ -104,7 +105,9 @@ def get_commands(management_dir):
     command_dir = os.path.join(management_dir, 'commands')
     try:
         return [f[:-3] for f in os.listdir(command_dir)
-                if not f.startswith('_') and f.endswith('.py')]
+                            if not f.startswith('_') and \
+                               not f.startswith('base') and \
+                               f.endswith('.py')]
     except OSError:
         return []
             
