@@ -5,6 +5,7 @@ management system.
 
 """
 #import subprocess
+from optparse import OptionParser
 
 
 class CommandDispatch(object):
@@ -16,12 +17,13 @@ class CommandDispatch(object):
     """
     def __init__(self, argv=None):
         self.argv = argv or sys.argv[:]
+        self.prog_name = os.path.basename(self.argv[0])
 
     def main_help_text(self):
         """
         Returns the script's main help text, as a string.
         """
-        usage = ['',"Type tipi help <subcommand>' for help on a specific subcommand.",'']
+        usage = ['',"Type %s help <subcommand>' for help on a specific subcommand." % self.prog_name,'']
         usage.append('Available subcommands:')
         commands = get_commands()
         commands.sort()
@@ -54,12 +56,12 @@ class CommandDispatch(object):
         being run, creates a parser appropriate to that command, and runs it.
         """
         
-        parser = LaxOptionParser(usage="%prog subcommand [options] [args]",
+        parser = OptionParser(usage="%prog subcommand [options] [args]",
                                  version=get_version(),
                                  option_list=BaseCommand.option_list)
         try:
             options, args = parser.parse_args(self.argv)
-            handle_default_options(options)
+            #handle_default_options(options)
         except:
             pass # Ignore any option errors at this point.
 
@@ -73,19 +75,23 @@ class CommandDispatch(object):
             if len(args) > 2:
                 self.fetch_command(args[2]).print_help(self.prog_name, args[2])
             else:
-                parser.print_lax_help()
+                #parser.print_lax_help()
+                parser.print_help()
                 sys.stderr.write(self.main_help_text() + '\n')
                 sys.exit(1)
-        # Special-cases: We want 'django-admin.py --version' and
-        # 'django-admin.py --help' to work, for backwards compatibility.
         elif self.argv[1:] == ['--version']:
-            # LaxOptionParser already takes care of printing the version.
+            
             pass
         elif self.argv[1:] == ['--help']:
-            parser.print_lax_help()
+            #parser.print_lax_help()
             sys.stderr.write(self.main_help_text() + '\n')
         else:
             self.fetch_command(subcommand).run_from_argv(self.argv)
+
+
+#TODO placeholder
+def get_version():
+    return (0,1,0)
 
 
 def get_commands(management_dir):
