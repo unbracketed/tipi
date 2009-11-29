@@ -5,8 +5,8 @@
 Commands may be any executable in the current path with a `tipi-'
 prefix.  Common commands are: init, extend, clone.
 """
-from tipi import commands
+from tipi import execute_from_command_line
 
 
 if __name__ == '__main__':    
-    commands.execute_from_command_line()
+    execute_from_command_line()

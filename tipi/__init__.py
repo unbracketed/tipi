@@ -4,8 +4,11 @@ subcommand and invoking it with the arguments. Heavily inspired by the Django
 management system.
 
 """
-#import subprocess
+import os
+import sys
 from optparse import OptionParser
+
+from tipi.commands.base import BaseCommand
 
 
 class CommandDispatch(object):
@@ -110,7 +113,7 @@ def execute_from_command_line(argv=None):
     """
     A simple method that runs a CommandDispatcher.
     """
-    dispatch = CommandDispatcher(argv)
+    dispatch = CommandDispatch(argv)
     dispatch.execute()
 
 

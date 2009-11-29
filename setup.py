@@ -15,10 +15,11 @@ setup(
     author = 'Brian Luft',
     author_email = 'brian@unbracketed.com',
 
-    packages = find_packages('tipi'),
-    package_dir = {'': 'tipi'},
+    packages = find_packages(),
+    #packages = find_packages('tipi'),
+    #package_dir = {'': 'tipi'},
 
-    install_requires = ['virtualenv','virtualenv-commands'],
+    install_requires = ['docutils', 'virtualenv', 'virtualenv-commands'],
 
     classifiers = [
         'Development Status :: 4 - Beta',
@@ -30,6 +31,6 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 
-    scripts=['bin/tipi', 'bin/tipi-init',],
+    scripts=['bin/tipi',],
 )
 
