@@ -3,7 +3,7 @@ from subprocess import Popen, PIPE
 from tempfile import mkdtemp
 from unittest import TestCase
 
-#rom tipi import create
+#from tipi.commands import creat
 
 
 class TipiAPITest(TestCase):
@@ -18,7 +18,11 @@ class TipiAPITest(TestCase):
         os.rmdir(self.ve_home)
     
     def test_create(self):
-        #create()
+        #verify created
+        #verify it can be activated
+        pass
+    
+    def test_create_name_clash_fails(self):
         pass
         
     
@@ -41,13 +45,23 @@ class TipiCLITest(TestCase):
         self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create", error.rstrip())
         output, error = self.runproc('--help')
         self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create", error.rstrip())
-        
-    
+            
     def test_display_version(self):
         output, error = self.runproc('--version')
         #TODO: placeholder
         self.assertEqual(str((0,1,0,)),output.rstrip())
 
-
+    def test_verbosity(self):
+        #TODO
+        pass
+    
+    def test_diplay_create_help(self):
+        output, error = self.runproc('help','create')
+        if not output.startswith('Usage: tipi create'):
+            self.fail()
+    
+    def test_create_no_args(self):
+        o,e = self.runproc('create')
+        self.assertEqual(e.rstrip(),'Error: Enter at least one virtualenv name.')
 
     

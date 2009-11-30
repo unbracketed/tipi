@@ -35,24 +35,24 @@ class CommandDispatch(object):
             usage.append('  %s' % cmd)
         return '\n'.join(usage)
 
-    def fetch_command(self, subcommand):
-        """
-        Tries to fetch the given subcommand, printing a message with the
-        appropriate command called from the command line (usually
-        "django-admin.py" or "manage.py") if it can't be found.
-        """
-        try:
-            app_name = get_commands()[subcommand]
-            if isinstance(app_name, BaseCommand):
-                # If the command is already loaded, use it directly.
-                klass = app_name
-            else:
-                klass = load_command_class(app_name, subcommand)
-        except KeyError:
-            sys.stderr.write("Unknown command: %r\nType '%s help' for usage.\n" % \
-                (subcommand, self.prog_name))
-            sys.exit(1)
-        return klass
+    #def fetch_command(self, subcommand):
+    #    """
+    #    Tries to fetch the given subcommand, printing a message with the
+    #    appropriate command called from the command line (usually
+    #    "django-admin.py" or "manage.py") if it can't be found.
+    #    """
+    #    try:
+    #        app_name = get_commands()[subcommand]
+    #        if isinstance(app_name, BaseCommand):
+    #            # If the command is already loaded, use it directly.
+    #            klass = app_name
+    #        else:
+    #            klass = load_command_class(app_name, subcommand)
+    #    except KeyError:
+    #        sys.stderr.write("Unknown command: %r\nType '%s help' for usage.\n" % \
+    #            (subcommand, self.prog_name))
+    #        sys.exit(1)
+    #    return klass
 
     def execute(self):
         """
@@ -66,7 +66,7 @@ class CommandDispatch(object):
         try:
             options, args = parser.parse_args(self.argv)
             #handle_default_options(options)
-            print options, args
+            #print options, args
         except:
             pass # Ignore any option errors at this point.
 
@@ -78,7 +78,7 @@ class CommandDispatch(object):
         #import pdb; pdb.set_trace()
         if subcommand == 'help':
             if len(args) > 2:
-                self.fetch_command(args[2]).print_help(self.prog_name, args[2])
+                get_command(args[2]).print_help(self.prog_name, args[2])
             else:
                 #parser.print_lax_help()
                 parser.print_help()
@@ -90,7 +90,7 @@ class CommandDispatch(object):
         elif self.argv[1:] == ['--help']:
             sys.stderr.write(self.main_help_text() + '\n')
         else:
-            self.fetch_command(subcommand).run_from_argv(self.argv)
+            get_command(subcommand).run_from_argv(self.argv)
 
 
 #TODO placeholder
@@ -98,11 +98,11 @@ def get_version():
     return (0,1,0)
 
 
-def get_commands(management_dir):
+def get_commands(*args, **kwargs):
     """
     Returns a list of the Tipi commands
     """
-    command_dir = os.path.join(management_dir, 'commands')
+    command_dir = os.path.join(__path__[0], 'commands')
     try:
         return [f[:-3] for f in os.listdir(command_dir)
                             if not f.startswith('_') and \
@@ -111,6 +111,44 @@ def get_commands(management_dir):
     except OSError:
         return []
             
+
+def get_command(name):
+    cmd_path = 'tipi.commands.%s' % name
+    __import__(cmd_path)
+    command_module = sys.modules[cmd_path]
+    klass = command_module.Command()
+    return klass
+
+
+def call_command(name, *args, **options):
+    """
+    Calls the given command, with the given options and args/kwargs.
+
+    This is the primary API you should use for calling specific commands.
+
+    Some examples:
+        call_command('create', 'myenv')
+        call_command('export', flat=True)
+    """
+    # Load the command object.
+    try:
+        #command exists?
+        get_commands().index(name)
+        klass = get_command(name)        
+    except ValueError:
+        raise CommandError, "Unknown command: %r" % name
+
+    # Grab out a list of defaults from the options. optparse does this for us
+    # when the script runs from the command line, but since call_command can
+    # be called programatically, we need to simulate the loading and handling
+    # of defaults (see #10080 for details).
+    defaults = dict([(o.dest, o.default)
+                     for o in klass.option_list
+                     if o.default is not NO_DEFAULT])
+    defaults.update(options)
+
+    return klass.execute(*args, **defaults)
+
 
 def execute_from_command_line(argv=None):
     """

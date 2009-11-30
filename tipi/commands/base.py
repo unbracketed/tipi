@@ -172,7 +172,7 @@ class BaseCommand(object):
         """
         parser = self.create_parser(argv[0], argv[1])
         options, args = parser.parse_args(argv[2:])
-        handle_default_options(options)
+        #handle_default_options(options)
         self.execute(*args, **options.__dict__)
 
     def execute(self, *args, **options):

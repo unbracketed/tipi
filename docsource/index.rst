@@ -68,7 +68,11 @@ Commands
 
 config
 
-create  
+create
+  -from tipi export
+  -from pip reqs file
+  -from repo
+  
 creategroup
 
 copy
@@ -76,7 +80,11 @@ copy
 remove
 
 extend
+changeparent
+addparent
 
 group
 
+export
+exportgroup
 
