@@ -63,6 +63,9 @@ Extending is a way to establish an inheritance relationship between VEs such tha
 Grouping
 --------
 
+You can create groups of VEs. Use groups to manage multiple VEs where most aspects will be in common but you want to vary an aspect of each. For example, using different Python
+interpreters for each one, or installing different point releases of a particular package in each one. 
+
 Commands
 --------
 

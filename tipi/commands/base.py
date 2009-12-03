@@ -3,19 +3,16 @@ Base classes for writing management commands (named commands which can
 be executed through ``tipi.py``).
 
 """
-#TODO factor out Django specific stuff
 import os
 import sys
+from ConfigParser import ConfigParser
 from optparse import make_option, OptionParser
+from virtualenv import resolve_interpreter
 
-#import django
-#from django.core.exceptions import ImproperlyConfigured
-#from django.core.management.color import color_style
-
-try:
-    set
-except NameError:
-    from sets import Set as set     # For Python 2.3
+#try:
+#    set
+#except NameError:
+#    from sets import Set as set     # For Python 2.3
 
 class CommandError(Exception):
     """
@@ -32,17 +29,7 @@ class CommandError(Exception):
     """
     pass
 
-#def handle_default_options(options):
-#    """
-#    Include any default options that all commands should accept here
-#    so that ManagementUtility can handle them before searching for
-#    user commands.
-#    
-#    """
-#    if options.settings:
-#        os.environ['DJANGO_SETTINGS_MODULE'] = options.settings
-#    if options.pythonpath:
-#        sys.path.insert(0, options.pythonpath)
+
 
 class BaseCommand(object):
     """
@@ -103,23 +90,32 @@ class BaseCommand(object):
         make_option('-v', '--verbosity', action='store', dest='verbosity', default='1',
             type='choice', choices=['0', '1', '2'],
             help='Verbosity level; 0=minimal output, 1=normal output, 2=all output'),
-        #make_option('--settings',
-        #    help='The Python path to a settings module, e.g. "myproject.settings.main". If this isn\'t provided, the DJANGO_SETTINGS_MODULE environment variable will be used.'),
-        #make_option('--pythonpath',
-        #    help='A directory to add to the Python path, e.g. "/home/djangoprojects/myproject".'),
+        make_option('-p', '--python',
+                    help='The Python interpreter to use, e.g., --python=python2.5 will use the python2.5 '
+        'interpreter to create the new environment.  The default is the interpreter that '
+        'virtualenv was installed with (%s)' % sys.executable),
         make_option('--traceback', action='store_true',
             help='Print traceback on exception'),
     )
     help = ''
     args = ''
 
-    # Configuration shortcuts that alter various logic.
-    can_import_settings = True
-    requires_model_validation = True
-    output_transaction = False # Whether to wrap the output in a "BEGIN; COMMIT;"
 
     #def __init__(self):
-    #    self.style = color_style()
+    #    #self.style = color_style()
+    #    try:
+    #        home = os.getenv('USERPROFILE') or os.getenv('HOME')
+    #        config = ConfigParser(open(os.path.join(home, '.tipirc')))
+    #    except IOError:
+    #        pass
+    #    except:
+    #        pass
+    #    
+    #    self._interpreter = resolve_interpreter('python')
+    #
+    #@property
+    #def python_interpreter(self):
+    #    return self._interpreter
 
     def get_version(self):
         """
@@ -128,7 +124,6 @@ class BaseCommand(object):
         override this method.
         
         """
-        #return django.get_version()
         #TODO placeholder
         return (0,1,0)
 
@@ -166,13 +161,12 @@ class BaseCommand(object):
 
     def run_from_argv(self, argv):
         """
-        Set up any environment changes requested (e.g., Python path
-        and Django settings), then run this command.
+        Set up any environment changes requested, then run this command.
         
         """
         parser = self.create_parser(argv[0], argv[1])
         options, args = parser.parse_args(argv[2:])
-        #handle_default_options(options)
+        
         self.execute(*args, **options.__dict__)
 
     def execute(self, *args, **options):

@@ -8,5 +8,9 @@ class Command(LabelCommand):
 
     def handle_label(self, label, **options):
         #TODO make sure ve with identical name doesn't exist
-        subprocess.call(['virtualenv', label])
+        
+        call_args = ['virtualenv', label]
+        if options.get('python'):
+            call_args += ['--python', options['python']]
+        subprocess.call(call_args)
         

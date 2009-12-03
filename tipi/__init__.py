@@ -28,31 +28,13 @@ class CommandDispatch(object):
         """
         usage = ['',"Type %s help <subcommand>' for help on a specific subcommand." % self.prog_name,'']
         usage.append('Available subcommands:')
-        #import pdb; pdb.set_trace()
+        
         commands = get_commands(__path__[0])
         commands.sort()
         for cmd in commands:
             usage.append('  %s' % cmd)
         return '\n'.join(usage)
 
-    #def fetch_command(self, subcommand):
-    #    """
-    #    Tries to fetch the given subcommand, printing a message with the
-    #    appropriate command called from the command line (usually
-    #    "django-admin.py" or "manage.py") if it can't be found.
-    #    """
-    #    try:
-    #        app_name = get_commands()[subcommand]
-    #        if isinstance(app_name, BaseCommand):
-    #            # If the command is already loaded, use it directly.
-    #            klass = app_name
-    #        else:
-    #            klass = load_command_class(app_name, subcommand)
-    #    except KeyError:
-    #        sys.stderr.write("Unknown command: %r\nType '%s help' for usage.\n" % \
-    #            (subcommand, self.prog_name))
-    #        sys.exit(1)
-    #    return klass
 
     def execute(self):
         """
@@ -65,8 +47,6 @@ class CommandDispatch(object):
                                  option_list=BaseCommand.option_list)
         try:
             options, args = parser.parse_args(self.argv)
-            #handle_default_options(options)
-            #print options, args
         except:
             pass # Ignore any option errors at this point.
 
@@ -75,12 +55,11 @@ class CommandDispatch(object):
         except IndexError:
             sys.stderr.write("Type '%s help' for usage.\n" % self.prog_name)
             sys.exit(1)
-        #import pdb; pdb.set_trace()
+        
         if subcommand == 'help':
             if len(args) > 2:
                 get_command(args[2]).print_help(self.prog_name, args[2])
             else:
-                #parser.print_lax_help()
                 parser.print_help()
                 sys.stderr.write(self.main_help_text() + '\n')
                 sys.exit(1)

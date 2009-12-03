@@ -64,4 +64,6 @@ class TipiCLITest(TestCase):
         o,e = self.runproc('create')
         self.assertEqual(e.rstrip(),'Error: Enter at least one virtualenv name.')
 
-    
+    def test_virtualenv_options_passthrough(self):
+        #TODO: make sure virtualenv options can be passed through
+        pass
