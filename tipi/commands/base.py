@@ -100,7 +100,7 @@ class BaseCommand(object):
     help = ''
     args = ''
 
-
+    #TODO syntax coloring support
     #def __init__(self):
     #    #self.style = color_style()
     #    try:

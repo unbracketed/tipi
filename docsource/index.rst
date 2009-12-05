@@ -66,6 +66,11 @@ Grouping
 You can create groups of VEs. Use groups to manage multiple VEs where most aspects will be in common but you want to vary an aspect of each. For example, using different Python
 interpreters for each one, or installing different point releases of a particular package in each one. 
 
+Installing Python Packages
+---------------------------
+
+
+
 Commands
 --------
 
@@ -75,6 +80,8 @@ create
   -from tipi export
   -from pip reqs file
   -from repo
+  
+  --startdir
   
 creategroup
 
@@ -91,3 +98,6 @@ group
 export
 exportgroup
 
+install
+
+startdir - specify where the starting dir should be after activating an env

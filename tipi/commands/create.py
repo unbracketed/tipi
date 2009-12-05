@@ -1,3 +1,4 @@
+import os
 import subprocess
 from tipi.commands.base import LabelCommand
 
@@ -16,5 +17,10 @@ class Command(LabelCommand):
         #TODO: map verbose onto virtualenv verbose option
         #TODO: check for directory option
         #TODO: check for VENV_HOME or WORKON_HOME
-        subprocess.call(call_args)
+        
+        #TODO honor TIPI_VENV_HOME if it exists
+        if 'TIPI_VENV_HOME' in os.environ:
+            os.chdir(os.environ['TIPI_VENV_HOME'])
+        
+        subprocess.call(['virtualenv', label])
         
