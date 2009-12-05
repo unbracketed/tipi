@@ -87,7 +87,7 @@ class BaseCommand(object):
     """
     # Metadata about this command.
     option_list = (
-        make_option('-v', '--verbosity', action='store', dest='verbosity', default='1',
+        make_option('-v', '--verbose', action='store', dest='verbose', default='1',
             type='choice', choices=['0', '1', '2'],
             help='Verbosity level; 0=minimal output, 1=normal output, 2=all output'),
         make_option('-p', '--python',

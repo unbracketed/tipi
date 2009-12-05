@@ -9,8 +9,12 @@ class Command(LabelCommand):
     def handle_label(self, label, **options):
         #TODO make sure ve with identical name doesn't exist
         
-        call_args = ['virtualenv', label]
+        call_args = ['virtualenv', label, '--no-site-packages']
         if options.get('python'):
             call_args += ['--python', options['python']]
+            
+        #TODO: map verbose onto virtualenv verbose option
+        #TODO: check for directory option
+        #TODO: check for VENV_HOME or WORKON_HOME
         subprocess.call(call_args)
         
