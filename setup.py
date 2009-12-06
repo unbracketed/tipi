@@ -16,10 +16,8 @@ setup(
     author_email = 'brian@unbracketed.com',
 
     packages = find_packages(),
-    #packages = find_packages('tipi'),
-    #package_dir = {'': 'tipi'},
-
-    install_requires = ['docutils', 'virtualenv', 'virtualenv-commands'],
+    
+    install_requires = ['virtualenv', 'virtualenv-commands'],
 
     classifiers = [
         'Development Status :: 4 - Beta',

@@ -50,8 +50,13 @@ class TipiAPITest(TestCase, CommandRunner):
         self._cc('create', 'testenv')
         shutil.rmtree(os.path.join(self.ve_home, 'testenv'))
         
+        #test create multiple
+        self._cc('create', 'env1')
+        self._cc('create', 'env2')
+        shutil.rmtree(os.path.join(self.ve_home, 'env1'))
+        shutil.rmtree(os.path.join(self.ve_home, 'env2'))
+        
         #TODO verify interpreter in output
-        #self._cc('create', 'testenv', '--python', 'python')
         call_command(*['create', 'testenv'], **{'python':'python'})
         shutil.rmtree(os.path.join(self.ve_home, 'testenv'))
     
