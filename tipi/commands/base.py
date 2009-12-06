@@ -173,9 +173,10 @@ class BaseCommand(object):
         
         """
         try:
-            output = self.handle(*args, **options)
-            if output:
-                print output
+            #output = self.handle(*args, **options)
+            print self.handle(*args, **options)
+            #if output:
+            #    print output
         except CommandError, e:
             #sys.stderr.write(self.style.ERROR(str('Error: %s\n' % e)))
             sys.stderr.write(str('Error: %s\n' % e))
@@ -259,30 +260,30 @@ class LabelCommand(BaseCommand):
         """
         raise NotImplementedError()
 
-class NoArgsCommand(BaseCommand):
-    """
-    A command which takes no arguments on the command line.
-
-    Rather than implementing ``handle()``, subclasses must implement
-    ``handle_noargs()``; ``handle()`` itself is overridden to ensure
-    no arguments are passed to the command.
-
-    Attempting to pass arguments will raise ``CommandError``.
-    
-    """
-    args = ''
-
-    def handle(self, *args, **options):
-        if args:
-            raise CommandError("Command doesn't accept any arguments")
-        return self.handle_noargs(**options)
-
-    def handle_noargs(self, **options):
-        """
-        Perform this command's actions.
-        
-        """
-        raise NotImplementedError()
+#class NoArgsCommand(BaseCommand):
+#    """
+#    A command which takes no arguments on the command line.
+#
+#    Rather than implementing ``handle()``, subclasses must implement
+#    ``handle_noargs()``; ``handle()`` itself is overridden to ensure
+#    no arguments are passed to the command.
+#
+#    Attempting to pass arguments will raise ``CommandError``.
+#    
+#    """
+#    args = ''
+#
+#    def handle(self, *args, **options):
+#        if args:
+#            raise CommandError("Command doesn't accept any arguments")
+#        return self.handle_noargs(**options)
+#
+#    def handle_noargs(self, **options):
+#        """
+#        Perform this command's actions.
+#        
+#        """
+#        raise NotImplementedError()
 
 #def copy_helper(style, app_or_project, name, directory, other_name=''):
 #    """

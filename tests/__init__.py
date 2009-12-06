@@ -1,12 +1,12 @@
+import shutil
 import os
 from subprocess import Popen, PIPE
 from tempfile import mkdtemp
 from unittest import TestCase
 
-#from tipi.commands import creat
 from tipi import (execute_from_command_line, CommandDispatch, get_commands,
                   call_command,)
-from tipi.commands.base import CommandError
+from tipi.commands.base import BaseCommand, CommandError
 
 
 class CommandRunner(object):
@@ -29,6 +29,7 @@ class CommandRunner(object):
 
 
 class TipiAPITest(TestCase, CommandRunner):
+    """Tests the commands by invoking them via call_command"""
     
     def setUp(self):
         #create a temp VE home
@@ -40,14 +41,20 @@ class TipiAPITest(TestCase, CommandRunner):
         os.rmdir(self.ve_home)
         
     def test_bogus_command(self):
-        
         self.assertRaises(CommandError, self._cc, 'bogus')
         
     def test_create(self):
-        #verify created
-        #verify it can be activated
+        #TODO verify created
+        #TODO verify it can be activated
         
-        self._cc('create')
+        self._cc('create', 'testenv')
+        shutil.rmtree(os.path.join(self.ve_home, 'testenv'))
+        
+        #TODO verify interpreter in output
+        #self._cc('create', 'testenv', '--python', 'python')
+        call_command(*['create', 'testenv'], **{'python':'python'})
+        shutil.rmtree(os.path.join(self.ve_home, 'testenv'))
+    
     
     def test_create_name_clash_fails(self):
         pass
@@ -59,10 +66,7 @@ class TipiAPITest(TestCase, CommandRunner):
         self.assertEqual(get_commands(), [])
         tipi.__path__ = old_path
         
-        
-
-    
-    
+            
 class CommandDispatcherTest(TestCase, CommandRunner):
     """Tests commands and their options by invoking them through the
     CommandDispatch.
@@ -135,3 +139,12 @@ class TipiCLITest(TestCase, CommandRunner):
     def test_virtualenv_options_passthrough(self):
         #TODO: make sure virtualenv options can be passed through
         pass
+    
+class BaseCommandTest(TestCase):
+    """Tests for the BaseCommand"""
+    
+    def test_print_help(self):
+        #TODO: check output
+        bc = BaseCommand()
+        #self.assertRaises(NotImplementedError, bc.print_help, 'tipi', 'test')
+        bc.print_help('tipi', 'test')
