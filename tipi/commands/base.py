@@ -9,10 +9,6 @@ from ConfigParser import ConfigParser
 from optparse import make_option, OptionParser
 from virtualenv import resolve_interpreter
 
-#try:
-#    set
-#except NameError:
-#    from sets import Set as set     # For Python 2.3
 
 class CommandError(Exception):
     """
@@ -125,7 +121,7 @@ class BaseCommand(object):
         
         """
         #TODO placeholder
-        return (0,1,0)
+        return (0, 1, 0,)
 
     def usage(self, subcommand):
         """
@@ -147,7 +143,7 @@ class BaseCommand(object):
         """
         return OptionParser(prog=prog_name,
                             usage=self.usage(subcommand),
-                            version=self.get_version(),
+                            version=str(self.get_version()),
                             option_list=self.option_list)
 
     def print_help(self, prog_name, subcommand):

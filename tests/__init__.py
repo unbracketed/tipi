@@ -33,7 +33,7 @@ class TipiCLITest(TestCase):
         pass
     
     def runproc(self, *args):
-        print args
+        #print args
         return Popen(["tipi",] + list(args), stdout=PIPE, stderr=PIPE).communicate()
         
     def test_no_args(self):
@@ -42,14 +42,19 @@ class TipiCLITest(TestCase):
     
     def test_display_help(self):
         output, error = self.runproc('help')
-        self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create", error.rstrip())
+        print "OUT: %s" % output
+        print "ERROR: %s" % error
+        self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create\n  extend", error.rstrip())
         output, error = self.runproc('--help')
-        self.assertEqual("\nType tipi help <subcommand>' for help on a specific subcommand.\n\nAvailable subcommands:\n  create", error.rstrip())
+        print "OUT: %s" % output
+        print "ERROR: %s" % error
+        self.assertTrue(output.startswith('Usage:'))
             
     def test_display_version(self):
         output, error = self.runproc('--version')
+        
         #TODO: placeholder
-        self.assertEqual(str((0,1,0,)),output.rstrip())
+        self.assertEqual(str((0, 1, 0)),output.rstrip())
 
     def test_verbosity(self):
         #TODO

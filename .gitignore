@@ -1,5 +1,6 @@
 *.pyc
 _build
+build
 _static
 _templates
 Makefile
