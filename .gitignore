@@ -7,3 +7,4 @@ Makefile
 ipython_log.py
 *egg-info
 pip-log.txt
+.coverage
