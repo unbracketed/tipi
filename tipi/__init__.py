@@ -47,13 +47,14 @@ class CommandDispatch(object):
                                  version=str(get_version()),
                                  option_list=BaseCommand.option_list)
                
+        
         options, args = parser.parse_args(self.argv)
         
         try:
             subcommand = self.argv[1]
         except IndexError:
             sys.stderr.write("Type '%s help' for usage.\n" % self.prog_name)
-            sys.exit(1)
+            sys.exit(0)
         
         if subcommand == 'help':
             if len(args) > 2:
@@ -62,9 +63,9 @@ class CommandDispatch(object):
                 parser.print_help()
                 sys.stderr.write(self.main_help_text() + '\n')
                 sys.exit(1)
-        elif self.argv[1:] == ['--version']:
-            print get_version()
-            sys.exit(0)
+        #elif self.argv[1] == '--version':
+        #    print get_version()
+        #    sys.exit(0)
         else:
             get_command(subcommand).run_from_argv(self.argv)
 
@@ -72,8 +73,8 @@ class CommandDispatch(object):
 #TODO placeholder
 def get_version():
     return (0, 1, 0, )
-
-
+    
+    
 def get_commands():
     """
     Returns a list of the Tipi commands
@@ -117,7 +118,7 @@ def call_command(name, *args, **options):
         get_commands().index(name)
         klass = get_command(name)        
     except ValueError:
-        raise CommandError, "Unknown command: %r" % name
+        raise CommandError( "Unknown command: %r" % name )
 
     # Grab out a list of defaults from the options. optparse does this for us
     # when the script runs from the command line, but since call_command can
